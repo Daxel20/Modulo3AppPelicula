@@ -5,14 +5,12 @@ export const styles = StyleSheet.create({
         flex:1,
         justifyContent:'center',
         padding:20,
-        gap:10,
-        color:'##0000FF'
+        gap:10
     },
     text:{
         fontSize:20,
         fontWeight:'bold',
-        textAlign:'center',
-        color:'#fff'
+        textAlign:'center'
     },
     message:{
         
@@ -23,7 +21,7 @@ export const styles = StyleSheet.create({
         textAlign:'center',
         fontSize:15,
         fontWeight:'bold',
-        color:'##0000FF'
+        color:'#705aa9'
     },
     rootActivity:{
         flex:1,
@@ -35,10 +33,37 @@ export const styles = StyleSheet.create({
         marginHorizontal:25,
         marginVertical:50
     },
-    headerHome:{
+    header:{
         flexDirection:'row',
         gap:15,
         alignItems:'center'
+    },
+    iconHeader:{
+        alignItems:"flex-end",
+        flex:1
+    },
+    modal:{
+        padding:20,
+        marginHorizontal:20,
+        backgroundColor:'#fff',
+        borderRadius:10,
+        gap:10
+    },
+    rootListProduct:{
+        marginTop:10,
+        flexDirection:'row',
+        padding:10,
+        alignItems:'center',
+        gap:20
+    },
+    facProduct:{
+        position:'absolute',
+        bottom:20,
+        right:15
+    },
+    rootInputsProduct:{
+        flexDirection:'row'
+        , gap:35
     }
 })
 
