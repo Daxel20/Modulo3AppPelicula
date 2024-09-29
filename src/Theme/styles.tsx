@@ -10,7 +10,8 @@ export const styles = StyleSheet.create({
     text:{
         fontSize:20,
         fontWeight:'bold',
-        textAlign:'center'
+        textAlign:'center',
+        color:'white'
     },
     message:{
         
@@ -64,6 +65,21 @@ export const styles = StyleSheet.create({
     rootInputsProduct:{
         flexDirection:'row'
         , gap:35
+    },
+    rootDetail:{
+        flex:1,
+        marginTop:30,
+        paddingHorizontal:20,
+        backgroundColor:'#fff',
+        gap:20
+    },
+    textDetail:{
+        fontWeight:'bold',
+        fontSize:16
+    },
+    iconSignOut:{
+        marginTop:20,
+        alignItems:'center'
     }
 })
 

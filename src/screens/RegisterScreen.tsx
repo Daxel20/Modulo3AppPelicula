@@ -5,7 +5,6 @@ import { styles } from '../Theme/styles';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebaseConfig';
 import { CommonActions, useNavigation } from '@react-navigation/native';
-
 interface FormRegister {
     email: string;
     password: string;
@@ -93,7 +92,7 @@ export const RegisterScreen = () => {
             </Button>
             <Text
                 style={[styles.textRedirect, { color: 'white' }]}
-                onPress={() => navigation.dispatch(CommonActions.navigate({ name: 'Login' }))}
+                onPress={() => navigation.dispatch(CommonActions.navigate({ name: 'Login' }))} 
             >
                 Ya tienes una cuenta? Inicia Sesión Ahora
             </Text>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Divider, IconButton, Modal, Portal, Snackbar, Text, TextInput } from 'react-native-paper';
 import { styles } from '../../../Theme/styles';
 import { View } from 'react-native';
-import { dbRealTime } from '../../../config/firebaseConfig';
+import { auth, dbRealTime } from '../../../config/firebaseConfig';
 import { push, ref, set } from 'firebase/database';
 
 interface Props {
@@ -25,7 +25,7 @@ interface ShowMessage {
 }
 
 export const NewPeliculaComponent = ({ showModalPelicula, setShowModalPelicula }: Props) => {
-    const [formProduct, setFormProduct] = useState<FormProduct>({
+    const [formProduct, setFormProduct] = useState({
         title: '',
         genre: '',
         price: 0,
@@ -44,7 +44,8 @@ export const NewPeliculaComponent = ({ showModalPelicula, setShowModalPelicula }
     }
 
     const handleSaveProduct = async () => {
-        if (!formProduct.title || !formProduct.genre || !formProduct.price || !formProduct.stock || !formProduct.description) {
+        if (!formProduct.title || !formProduct.genre || !formProduct.price || 
+            !formProduct.stock || !formProduct.description) {
             setShowMessage({
                 visible: true,
                 message: 'Complete todos los Campos',
@@ -53,12 +54,12 @@ export const NewPeliculaComponent = ({ showModalPelicula, setShowModalPelicula }
             return;
         }
 
-        const dbRef = ref(dbRealTime, 'products');
+        const dbRef = ref(dbRealTime, 'pelicula/'+auth.currentUser?.uid);
         const saveProduct = push(dbRef);
 
         try {
             await set(saveProduct, formProduct);
-            setShowModalPelicula(false);
+            setShowModalPelicula(false);  
         } catch (e) {
             console.log(e);
             setShowMessage({
@@ -70,11 +71,10 @@ export const NewPeliculaComponent = ({ showModalPelicula, setShowModalPelicula }
     }
 
     return (
-        <>
             <Portal>
                 <Modal visible={showModalPelicula} contentContainerStyle={styles.modal}>
                     <View style={styles.header}>
-                        <Text variant='headlineSmall'>Nueva Pelicula</Text>
+                        <Text variant='headlineSmall'>Nueva Película</Text>
                         <View style={styles.iconHeader}>
                             <IconButton
                                 icon='close-circle-outline'
@@ -122,11 +122,11 @@ export const NewPeliculaComponent = ({ showModalPelicula, setShowModalPelicula }
                 <Snackbar
                     visible={showMessage.visible}
                     onDismiss={() => setShowMessage({ ...showMessage, visible: false })}
-                    style={{ ...styles.message, backgroundColor: showMessage.color }}
-                >
+                    style={{ ...styles.message, 
+                    backgroundColor: showMessage.color }}>
                     {showMessage.message}
                 </Snackbar>
             </Portal>
-        </>
+
     );
 }

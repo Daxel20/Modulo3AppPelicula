@@ -8,19 +8,20 @@ import { HomeScreen } from '../screens/HomeScreen/HomeScreen';
 import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
 import { styles } from '../Theme/styles';
+import { DetailPeliculaScreen } from '../screens/HomeScreen/DetailPeliculaScreen';
 
 interface Routes {
   name: string;
   screen: () => JSX.Element;
+  headerShow?: boolean;
+  title?:boolean;
 }
 
-const routesNoAuth: Routes[] = [
+const routes: Routes[] = [
   { name: 'Login', screen: LoginScreen },
-  { name: 'Register', screen: RegisterScreen }
-];
-
-const routesAuth: Routes[] = [
-  { name: 'Home', screen: HomeScreen }
+  { name: 'Register', screen: RegisterScreen },
+  {name:'Home',screen:HomeScreen},
+  {name:'Detail',screen:DetailPeliculaScreen , headerShow:true, title:true}
 ];
 
 const Stack = createStackNavigator();
@@ -30,41 +31,33 @@ export const StackNavigator = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsAuth(!!user);
+    setIsLoading(true);
+    onAuthStateChanged(auth,(user)=>{
+      if(user){
+        setIsAuth(true);
+      }
       setIsLoading(false);
     });
-
-    return () => unsubscribe();
   }, []);
 
   return (
     <>
-      {isLoading ? (
-        <View style={styles.rootActivity}>
-          <ActivityIndicator animating={true} size={30} />
-        </View>
-      ) : (
-        <Stack.Navigator>
-          {!isAuth
-            ? routesNoAuth.map((item, index) => (
-                <Stack.Screen 
-                  key={index} 
-                  name={item.name} 
-                  options={{ headerShown: false }} 
-                  component={item.screen} 
-                />
-              ))
-            : routesAuth.map((item, index) => (
-                <Stack.Screen 
-                  key={index} 
-                  name={item.name} 
-                  options={{ headerShown: false }} 
-                  component={item.screen} 
-                />
-              ))}
-        </Stack.Navigator>
+    {isLoading ?(
+      <View style={styles.rootActivity}>
+        <ActivityIndicator animating={true} size={30} />
+      </View>
+      ):(
+      <Stack.Navigator initialRouteName={isAuth?'Home': 'Login'}>
+        {
+            routes.map((item,index)=>(
+              <Stack.Screen key={index} 
+                name={item.name} 
+                options={{headerShown:item.headerShow ?? false, title:'Pelicula Detalles'}} 
+                component={item.screen} />
+            ))
+        }
+      </Stack.Navigator>
       )}
     </>
   );
-};
+}

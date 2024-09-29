@@ -5,17 +5,16 @@ import { Button, Snackbar, Text, TextInput } from 'react-native-paper';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../config/firebaseConfig';
 import { CommonActions, useNavigation } from '@react-navigation/native';
+    interface FormLogin {
+        email: string;
+        password: string;
+    }
 
-interface FormLogin {
-    email: string;
-    password: string;
-}
-
-interface showMessage {
-    visible: boolean;
-    message: string;
-    color: string;
-}
+    interface showMessage {
+        visible: boolean;
+        message: string;
+        color: string;
+    }
 
 export const LoginScreen = () => {
 
@@ -47,25 +46,28 @@ export const LoginScreen = () => {
             });
             return;
         }
+
         try {
-            const response = await signInWithEmailAndPassword(
+            await signInWithEmailAndPassword(
                 auth,
                 formLogin.email,
                 formLogin.password
             );
+
+            navigation.dispatch(CommonActions.navigate({ name: 'Home' }));
         } catch (e) {
-            console.log(e);
+            console.log();
             setShowMessage({
                 visible: true,
                 message: 'Correo y/o Contraseña Incorrecta',
                 color: '#7a0808'
-            })
+            });
         }
     }
 
     return (
         <ImageBackground
-            source={ { uri: 'https://c4.wallpaperflare.com/wallpaper/189/461/306/the-walking-dead-wallpaper-preview.jpg' }}
+            source={{ uri: 'https://c4.wallpaperflare.com/wallpaper/189/461/306/the-walking-dead-wallpaper-preview.jpg' }}
             style={styles.root}
         >
             <Text style={styles.text}> Inicia Sesion</Text>
@@ -89,7 +91,7 @@ export const LoginScreen = () => {
             <Text
                 style={[styles.textRedirect, { color: 'white' }]}
                 onPress={() => navigation.dispatch(CommonActions.navigate({ name: 'Register' }))}
-                >
+            >
                 No tienes una cuenta? Registrate ahora
             </Text>
             <Snackbar
@@ -103,5 +105,5 @@ export const LoginScreen = () => {
                 {showMessage.message}
             </Snackbar>
         </ImageBackground>
-    )
+    );
 }
